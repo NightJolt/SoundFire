@@ -10,7 +10,7 @@ import { LargeList } from "react-native-largelist";
 
 import { setSongId } from '../Actions/PlayerActions';
 
-class AppSongList extends React.Component {
+class AppSongList extends React.Component {    
     render() {
         return (
             <LargeList
@@ -43,7 +43,8 @@ class AppSongList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         style: state.StyleReducer,
-        songs: state.SongsReducer
+        songs: state.SongsReducer,
+        player: state.PlayerReducer
     };
 };
 

@@ -68,7 +68,6 @@ class AppSettings extends React.Component {
                             <Switch value={this.props.settings.crazyMode} onValueChange={() => this.props.toggleCrazyMode()} />
                         </Right>
                     </CardItem>
-                    <Slider minimumTrackTintColor={this.props.style.mainColor} thumbTintColor={this.props.style.mainColor} />
                 </Card>
             </View>
         );

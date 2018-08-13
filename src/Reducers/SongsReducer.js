@@ -1,5 +1,6 @@
 let _default = {
     loaded: false,
+    fullLength: 0,
     songList: [],
     lyrics: []
 }
@@ -8,16 +9,20 @@ const songsReducer = (state = _default, action) => {
     switch(action.type) {
         case "songs:SET_LIST_FULFILLED":
             let tracks = action.payload;
+            let fullLength = 0;
 
             for (let i=0;i<tracks.length;i++) {
                 tracks[i].id = i + 1;
-
+                
+                tracks[i].image = require(tracks[i].cover);
+                
                 let millsec = tracks[i].duration;
                 let hour = Math.floor(millsec / 3600000);
                 millsec %= 3600000;
                 let min = Math.floor(millsec / 60000);
                 millsec %= 60000;
                 let sec = Math.floor(millsec / 1000);
+                fullLength += sec
                 let time = null;
                 if (sec < 10)
                     sec = '0' + sec;
@@ -43,7 +48,8 @@ const songsReducer = (state = _default, action) => {
             state = {
                 ...state,
                 loaded: true,
-                songList: tracks
+                songList: tracks,
+                fullLength: fullLength
             }
             
             console.log(state);

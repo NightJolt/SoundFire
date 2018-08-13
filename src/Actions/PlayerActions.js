@@ -5,6 +5,13 @@ export function setSongId(value) {
     }
 }
 
+export function prepareAtPath(value) {
+    return {
+        type: 'player:PREPARE_AT_PATH',
+        payload: value
+    }
+}
+
 export function togglePlayer() {
     return {
         type: 'player:TOGGLE_PLAYER'

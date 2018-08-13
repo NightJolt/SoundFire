@@ -7,6 +7,7 @@ import {
     Text
 } from 'native-base';
 
+import AppPlayer from './AppPlayer';
 import AppSongList from './AppSongList';
 import AppSettings from './AppSettings';
 
@@ -22,6 +23,11 @@ function GetContent(props) {
     }
 
     switch(props.content.currentPage) {
+        case 0:
+            return (
+                <AppPlayer />
+            )
+            break;
         case 2:
             return (
                 <Content contentContainerStyle={{ flex: 1 }}>

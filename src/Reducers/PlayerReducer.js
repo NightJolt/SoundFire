@@ -22,6 +22,17 @@ const headerReducer = (state = _default, action) => {
             state.player = new Player(action.payload.path);
             state.player.play();
             break;
+        case "player:PREPARE_AT_PATH":
+            state = {
+                ...state,
+                currentSongId: action.payload.id,
+                isPlaying: false
+            }
+            if (state.player != null)
+                state.player.destroy();
+            state.player = new Player(action.payload.path);
+            state.player.prepare();
+            break;
         case "player:TOGGLE_PLAYER":
             state = {
                 ...state,

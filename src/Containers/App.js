@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     Root,
-    Drawer,
-    Container,
-    Footer
+    Container
 } from 'native-base';
+import Drawer from 'react-native-drawer';
 
 import SideBar from './SideBar';
 import AppHeader from './AppHeader';
@@ -20,16 +19,20 @@ class App extends Component {
     }
     
     closeDrawer = () => {
-      this.drawer._root.close()
+      this.drawer.close()
     };
 
     openDrawer = () => {
-      this.drawer._root.open()
+      this.drawer.open()
     };
 
     render() {
         return (
-            <Drawer ref={(ref) => { this.drawer = ref; }} content={<SideBar navigator={this.navigator} closeDrawer={() => this.closeDrawer()} />} onClose={() => this.closeDrawer()} >
+            <Drawer type='overlay'
+			openDrawerOffset={100}
+			ref={(ref) => { this.drawer = ref; }}
+			content={<SideBar navigator={this.navigator} closeDrawer={() => this.closeDrawer()} />}
+			onClose={() => this.closeDrawer()} >
                 <Root>
                     <Container style={{ backgroundColor: this.props.style.darkGrey }}>
                         <AppHeader openDrawer={() => this.openDrawer()} />

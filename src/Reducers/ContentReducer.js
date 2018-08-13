@@ -1,5 +1,5 @@
 let _default = {
-    currentPage: 2
+    currentPage: 0
 }
 
 const contentReducer = (state = _default, action) => {
