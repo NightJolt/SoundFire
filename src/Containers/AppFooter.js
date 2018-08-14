@@ -10,9 +10,11 @@ import {
     Icon
 } from 'native-base';
 
-import { playPlayer, pausePlayer, setSongId, prepareAtPath } from '../Actions/PlayerActions';
+import { playPlayer, pausePlayer, setSongId, prepareAtPath, setProgress } from '../Actions/PlayerActions';
 
 import { setPage } from '../Actions/ContentActions';
+
+import { toPercent } from '../Functions';
 
 const styles = StyleSheet.create ({
     footertab: {
@@ -46,28 +48,29 @@ const styles = StyleSheet.create ({
 });
 
 class AppFooter extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            progress: '0%'
-        }
-        
-        /*this.inteval = setInterval(() => {
-            if (this.props.player.player.currentTime >= 0 || this.props.player.player.duration > 0) {
-                this.setState({
-                    progress: this.props.player.player.currentTime / this.props.player.player.duration * 100 + '%'
-                })
-            } else {
-                this.setState({
-                    progress: 0
-                })
-            }
-        }, 1000)*/
-    }
-    
     componentDidMount() {
         this.props.prepareAtPath({id: 0, path: this.props.songs.songList[0].path});
+        
+        this.interval = setInterval(() => {
+            if (Math.trunc(this.props.player.player.currentTime / 500) == Math.trunc(this.props.player.player.duration / 500) - 1) {
+                if (this.props.player.repeat) {
+                    this.props.setSongId({id: this.props.player.currentSongId, path: this.props.songs.songList[this.props.player.currentSongId].path})
+                } else if (this.props.player.shuffle) {
+                    let random = Math.floor(Math.random() * this.props.songs.songList.length + 1);
+                    this.props.setSongId({id: random, path: this.props.songs.songList[random].path})
+                } else {
+                    this.playNext();
+                }
+            } else if (this.props.player.player.currentTime >= 0 || this.props.player.player.duration > 0) {
+                this.props.setProgress(this.props.player.player.currentTime);
+            } else {
+                this.props.setProgress(0);
+            }
+        }, 1000)
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
     
     playNext = () => {
@@ -93,7 +96,7 @@ class AppFooter extends React.Component {
             <Footer>
                 <FooterTab style={[styles.footertab, {backgroundColor: this.props.style.darkGrey}]}>
                     <View style={{backgroundColor: this.props.style.grey, height: '5%'}}>
-                        <View style={{backgroundColor: this.props.style.mainColor, width: this.state.progress, height: '100%'}} />
+                        <View style={{backgroundColor: this.props.style.mainColor, width: toPercent(this.props.player.progress, this.props.player.player.duration), height: '100%'}} />
                     </View>
                     <View style={styles.controls}>
                         <TouchableOpacity style={styles.title} onPress={() => {this.props.setPage(0)}}>
@@ -140,6 +143,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setProgress: (value) => {
+            dispatch(setProgress(value));
+        },
         prepareAtPath: (value) => {
             dispatch(prepareAtPath(value));
         },

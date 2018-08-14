@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Slider } from 'react-native';
+import { Image, Slider, TextInput, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import {
     Content,
@@ -16,17 +16,51 @@ import {
     Accordion
 } from 'native-base';
 
-import { formatTimeBySeconds } from '../Functions';
+import { setPlayerItem } from '../Actions/PlayerActions';
+
+import { formatTimeBySeconds, toPercent } from '../Functions';
 
 class AppPlayer extends Component {
-    componentDidMount() {
-        let path = this.props.songs.songList[this.props.player.currentSongId].cover;
-        /*if (path == undefined) {
-            this.cover = require('../Images/default_cover.png');
-        } else {
-            path = path.replace('file:///storage/emulated/0/', '');
-            this.cover = require('file:///storage/emulated/0/' + path);
-        }*/
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            lyricsEdible: false,
+            lyrics: '',
+            progressEdible: false,
+            heart: false
+        }
+        
+        this.getLyrics();
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.player.currentSongId != this.props.player.currentSongId) {
+            this.getLyrics();
+        }
+    }
+    
+    setLyrics = async () => {
+        try {
+            let key = '@Lyrics:' + this.props.songs.songList[this.props.player.currentSongId].title.replace(' ', '');
+            await AsyncStorage.setItem(key, this.state.lyrics);
+        } catch (error) {
+            alert(error);
+        }
+    }
+    
+    getLyrics = async (name) => {
+        try {
+            let key = '@Lyrics:' + this.props.songs.songList[this.props.player.currentSongId].title.replace(' ', '');
+            let result = await AsyncStorage.getItem(key, (error, result) => {
+                if (result != null)
+                    this.setState({lyrics: result});
+                else
+                    this.setState({lyrics: ''});
+            });
+        } catch (error) {
+            alert(error);
+        }
     }
     
     render() {
@@ -35,7 +69,7 @@ class AppPlayer extends Component {
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <CardItem style={{ backgroundColor: this.props.style.grey }}>
                       <Left>
-                        <Thumbnail source={'../Images/default_cover.png'} />
+                        <Thumbnail source={require('../Images/default_cover.png')} />
                         <Body>
                           <Text numberOfLines={2} style={{ color: this.props.style.darkWhite }}>{this.props.songs.songList[this.props.player.currentSongId].title}</Text>
                           <Text numberOfLines={1} note>{this.props.songs.songList[this.props.player.currentSongId].author}</Text>
@@ -44,12 +78,19 @@ class AppPlayer extends Component {
                     </CardItem>
                 </Card>
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 5 }}>
+                        <Icon style={{ color: this.props.player.repeat ? this.props.style.purple : this.props.style.darkWhite }} name="md-repeat" onPress={() => {setPlayerItem({name: 'repeat', value: !this.props.player.repeat})}} />
+                        <Icon style={{ color: this.props.player.shuffle ? this.props.style.aqua : this.props.style.darkWhite }} name="md-shuffle" onPress={() => {setPlayerItem({name: 'shuffle', value: !this.props.player.shuffle})}} />
+                        <Icon style={{ color: this.state.heart ? this.props.style.red : this.props.style.darkWhite }} name="md-heart" onPress={() => {this.setState({heart: !this.state.heart})}} />
+                    </View>
+                </Card>
+                <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 5 }}>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: this.props.style.darkWhite }}>00:00</Text>
+                            <Text style={{ color: this.props.style.darkWhite }}>{formatTimeBySeconds(Math.ceil(this.props.player.progress / 1000))}</Text>
                         </View>
                         <View style={{ width: '74%', justifyContent: 'center' }}>
-                            <Slider minimumTrackTintColor={this.props.style.mainColor} thumbTintColor={this.props.style.mainColor} />
+                            <Slider minimumValue={0} maximumValue={this.props.player.player.duration} value={!this.state.progressEdible ? this.props.player.progress : 0} minimumTrackTintColor={this.props.style.mainColor} thumbTintColor={this.props.style.mainColor} onValueChange={() => {this.setState({progressEdible: true})}} onSlidingComplete={(value) => {this.setState({progressEdible: false}); this.props.player.player.seek(value)}} />
                         </View>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: this.props.style.darkWhite }}>{this.props.songs.songList[this.props.player.currentSongId].time}</Text>
@@ -58,10 +99,29 @@ class AppPlayer extends Component {
                 </Card>
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <CardItem style={{ backgroundColor: this.props.style.grey }}>
-                        <Accordion dataArray={[{
-                            title: 'Lyrics',
-                            content: 'Playing Minecraft'
-                        }]} />
+                        <Left>
+                            <Text style={{ color: this.props.style.darkWhite, fontSize: 16 }}>Lyrics</Text>
+                        </Left>
+                        <Right>
+                            {
+                                this.state.lyricsEdible ? (
+                                    <Button onPress={() => {this.setState({lyricsEdible: false}); this.setLyrics()}} style={{ backgroundColor: this.props.style.mainColor }} rounded small><Text>Save</Text></Button>
+                                ) : (
+                                    <Button onPress={() => {this.setState({lyricsEdible: true})}} style={{ backgroundColor: this.props.style.mainColor }} rounded small><Text>Edit</Text></Button>
+                                )
+                            }
+                        </Right>
+                    </CardItem>
+                    <CardItem style={{ backgroundColor: this.props.style.grey }}>
+                        {
+                            this.state.lyricsEdible ? (
+                                <TextInput multiline={true} numberOfLines={1} edible={true} autoCorrect={false} underlineColorAndroid='transparent' style={{ width: '100%', color: this.props.style.darkWhite, fontSize: 15 }} textAlign={'center'} value={this.state.lyrics} onChangeText={(text) => this.setState({lyrics: text})} />
+                            ) : (
+                                <Text style={{ width: '100%', color: this.props.style.darkWhite, fontSize: 15, textAlign: 'center' }}>
+                                    {this.state.lyrics}
+                                </Text>
+                            )
+                        }
                     </CardItem>
                 </Card>
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
@@ -94,6 +154,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setPlayerItem: (value) => {
+            dispatch(setPlayerItem(value))
+        }
     };
 };
 

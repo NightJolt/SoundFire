@@ -12,6 +12,13 @@ export function prepareAtPath(value) {
     }
 }
 
+export function setProgress(value) {
+    return {
+        type: 'player:SET_PROGRESS',
+        payload: value
+    }
+}
+
 export function togglePlayer() {
     return {
         type: 'player:TOGGLE_PLAYER'
@@ -27,5 +34,12 @@ export function playPlayer() {
 export function pausePlayer() {
     return {
         type: 'player:PAUSE_PLAYER'
+    }
+}
+
+export function setPlayerItem(value) {
+    return {
+        type: 'player:SET_PLAYER_ITEM',
+        payload: value
     }
 }

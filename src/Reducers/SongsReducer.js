@@ -14,7 +14,8 @@ const songsReducer = (state = _default, action) => {
             for (let i=0;i<tracks.length;i++) {
                 tracks[i].id = i + 1;
                 
-                tracks[i].image = require(tracks[i].cover);
+                /*let cover = tracks[i].cover;
+                tracks[i].image = require(cover);*/
                 
                 let millsec = tracks[i].duration;
                 let hour = Math.floor(millsec / 3600000);

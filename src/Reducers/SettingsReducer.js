@@ -3,7 +3,7 @@ let _default = {
     crazyMode: false
 }
 
-const optionsReducer = (state = _default, action) => {
+const settingsReducer = (state = _default, action) => {
     switch(action.type) {
         case "settings:TOGGLE_AUTO_CLOSING_DRAWER":
             state = {
@@ -24,4 +24,4 @@ const optionsReducer = (state = _default, action) => {
     return state;
 }
 
-export default optionsReducer;
+export default settingsReducer;
