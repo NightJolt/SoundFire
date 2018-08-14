@@ -32,6 +32,7 @@ class AppPlayer extends Component {
         }
         
         this.getLyrics();
+        setPlayerItem({name: 'repeat', value: true});
     }
     
     componentDidUpdate(prevProps, prevState) {
@@ -79,8 +80,8 @@ class AppPlayer extends Component {
                 </Card>
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 5 }}>
-                        <Icon style={{ color: this.props.player.repeat ? this.props.style.purple : this.props.style.darkWhite }} name="md-repeat" onPress={() => {setPlayerItem({name: 'repeat', value: !this.props.player.repeat})}} />
-                        <Icon style={{ color: this.props.player.shuffle ? this.props.style.aqua : this.props.style.darkWhite }} name="md-shuffle" onPress={() => {setPlayerItem({name: 'shuffle', value: !this.props.player.shuffle})}} />
+                        <Icon style={{ color: this.props.player.repeat ? this.props.style.purple : this.props.style.darkWhite }} name="md-repeat" onPress={() => {this.props.setPlayerItem({name: 'repeat', value: !this.props.player.repeat})}} />
+                        <Icon style={{ color: this.props.player.shuffle ? this.props.style.aqua : this.props.style.darkWhite }} name="md-shuffle" onPress={() => {this.props.setPlayerItem({name: 'shuffle', value: !this.props.player.shuffle})}} />
                         <Icon style={{ color: this.state.heart ? this.props.style.red : this.props.style.darkWhite }} name="md-heart" onPress={() => {this.setState({heart: !this.state.heart})}} />
                     </View>
                 </Card>

@@ -20,18 +20,15 @@ let playbackOptions = {
 const playerReducer = (state = _default, action) => {
     switch(action.type) {
         case "player:SET_PLAYER_ITEM":
-            alert('Access Violation!');
-            if (action.name == 'repeat') {
-                alert('changing repeat');
+            if (action.payload.name == 'repeat') {
                 state = {
                     ...state,
-                    repeat: action.value
+                    repeat: action.payload.value
                 }
-            } else if (action.name == 'shuffle') {
-                alert('changing shuffle');
+            } else if (action.payload.name == 'shuffle') {
                 state = {
                     ...state,
-                    shuffle: action.value
+                    shuffle: action.payload.value
                 }
             }
             break;
