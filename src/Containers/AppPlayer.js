@@ -64,13 +64,21 @@ class AppPlayer extends Component {
         }
     }
     
+    getCoverImage = () => {
+        if (this.props.songs.songList[this.props.player.currentSongId].cover == undefined)
+            return global.DEFAULT_COVER_IMAGE;
+        else
+            return {uri: this.props.songs.songList[this.props.player.currentSongId].cover};
+        
+    }
+    
     render() {
         return (
             <Content padder>
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <CardItem style={{ backgroundColor: this.props.style.grey }}>
                       <Left>
-                        <Thumbnail source={require('../Images/default_cover.png')} />
+                        <Thumbnail source={this.getCoverImage()} />
                         <Body>
                           <Text numberOfLines={2} style={{ color: this.props.style.darkWhite }}>{this.props.songs.songList[this.props.player.currentSongId].title}</Text>
                           <Text numberOfLines={1} note>{this.props.songs.songList[this.props.player.currentSongId].author}</Text>

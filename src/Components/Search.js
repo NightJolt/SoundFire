@@ -13,7 +13,7 @@ class Search extends React.Component {
     render() {
         return (
             <Item style={{backgroundColor: this.props.style.mainColor}}>
-                <Input placeholder="Search" placeholderTextColor='white' style={{color: 'white'}} />
+                <Input placeholder="Search" placeholderTextColor="white" style={{color: 'white'}} />
                 <TouchableOpacity onPress={() => this.props.toggleSearchBar(false)}>
                     <Icon name="close" style={{color: 'white'}} />
                 </TouchableOpacity>

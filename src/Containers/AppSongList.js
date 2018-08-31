@@ -3,7 +3,8 @@ import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import {
     View,
-    Text
+    Text,
+    Content
 } from 'native-base';
 
 import { LargeList } from "react-native-largelist";
@@ -13,7 +14,8 @@ import { setSongId } from '../Actions/PlayerActions';
 class AppSongList extends React.Component {    
     render() {
         return (
-            <LargeList
+            <Content contentContainerStyle={{ flex: 1 }}>
+                <LargeList
                 style={{ flex: 1 }}
                 bounces={true}
                 safeMargin={300}
@@ -36,6 +38,7 @@ class AppSongList extends React.Component {
                     <View style={{ height: 1, backgroundColor: 'rgb(90, 90, 90)' }} />
                                     }
                 />
+            </Content>
         );
     }
 }

@@ -10,6 +10,8 @@ import {
 import AppPlayer from './AppPlayer';
 import AppSongList from './AppSongList';
 import AppSettings from './AppSettings';
+import AppHelp from './AppHelp';
+import AppAbout from './AppAbout';
 
 function GetContent(props) {
     if (!props.songs.loaded) {
@@ -30,23 +32,30 @@ function GetContent(props) {
             break;
         case 2:
             return (
-                <Content contentContainerStyle={{ flex: 1 }}>
-                    <AppSongList />
-                </Content>
+                <AppSongList />
             )
             break;
         case 4:
             return (
-                <Content padder>
-                    <AppSettings />
-                </Content>
+                <AppSettings />
+            )
+            break;
+        case 5:
+            return (
+                <AppHelp />
+            )
+            break;
+        case 6:
+            return (
+                <AppAbout />
             )
             break;
         default:
             return (
                 <Content contentContainerStyle={{ flex: 1 }}>
-                    <View>
-                        
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 26, color: props.style.mainColor }}>Coming Soon</Text>
+                        <Text note>Possibly in the next release (hopefully)</Text>
                     </View>
                 </Content>
             )

@@ -14,6 +14,7 @@ import {
 } from "native-base";
 
 import { setPage } from '../Actions/ContentActions';
+import { setTitle } from '../Actions/HeaderActions';
 
 const styles = StyleSheet.create({
     header: {
@@ -30,7 +31,7 @@ class SideBar extends React.Component {
 
         this.renderData = [
             {
-                press: () => this.props.setPage(0),
+                press: () => {this.props.setPage(0); this.props.setTitle('Playing Now')},
                 icon: 'ios-musical-notes',
                 iconColor: this.props.style.aqua,
                 text: 'Playing now',
@@ -38,7 +39,7 @@ class SideBar extends React.Component {
                 hasDivider: false
             },
             {
-                press: () => this.props.setPage(1),
+                press: () => {this.props.setPage(1); this.props.setTitle('Playlist')},
                 icon: 'md-list',
                 iconColor: this.props.style.purple,
                 text: 'Playlist',
@@ -46,7 +47,7 @@ class SideBar extends React.Component {
                 hasDivider: false
             },
             {
-                press: () => this.props.setPage(2),
+                press: () => {this.props.setPage(2); this.props.setTitle('Songs')},
                 icon: 'md-headset',
                 iconColor: this.props.style.yellow,
                 text: 'Songs',
@@ -54,7 +55,7 @@ class SideBar extends React.Component {
                 hasDivider: false
             },
             {
-                press: () => this.props.setPage(3),
+                press: () => {this.props.setPage(3); this.props.setTitle('Favourites')},
                 icon: 'md-heart',
                 iconColor: this.props.style.red,
                 text: 'Favourites',
@@ -62,7 +63,7 @@ class SideBar extends React.Component {
                 hasDivider: true
             },
             {
-                press: () => this.props.setPage(4),
+                press: () => {this.props.setPage(4); this.props.setTitle('Settings')},
                 icon: 'ios-settings',
                 iconColor: this.props.style.lime,
                 text: 'Settings',
@@ -70,7 +71,7 @@ class SideBar extends React.Component {
                 hasDivider: false
             },
             {
-                press: () => this.props.setPage(5),
+                press: () => {this.props.setPage(5); this.props.setTitle('Help')},
                 icon: 'ios-help-circle-outline',
                 iconColor: this.props.style.orange,
                 text: 'Help',
@@ -78,7 +79,7 @@ class SideBar extends React.Component {
                 hasDivider: false
             },
             {
-                press: () => this.props.setPage(6),
+                press: () => {this.props.setPage(6); this.props.setTitle('About')},
                 icon: 'ios-information-circle',
                 iconColor: this.props.style.blue,
                 text: 'About',
@@ -93,10 +94,11 @@ class SideBar extends React.Component {
             <ScrollView style={{backgroundColor: this.props.style.darkGrey, height: '100%'}}>
                 <View style={[styles.header, {backgroundColor: this.props.style.lightBlack}]}>
                     <View style={{flex: 2, flexDirection:"row", justifyContent:"center"}}>
+                        <Thumbnail source={global.APP_LOGO} />
                     </View>
                     <View style={{flex: 4}}>
-                        <H3 style={{color: 'white'}}>AppName</H3>
-                        <Text note>Version 1.0.0</Text>
+                        <H3 style={{color: 'rgb(255, 122, 0)'}}>{global.APP_NAME}</H3>
+                        <Text note>Version {global.APP_VERSION}</Text>
                     </View>
                 </View>
                 <View>
@@ -135,6 +137,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setPage: (value) => {
             dispatch(setPage(value));
+        },
+        setTitle: (value) => {
+            dispatch(setTitle(value));
         }
     };
 };

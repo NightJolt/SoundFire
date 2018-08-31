@@ -7,12 +7,6 @@ export function setLoadState(value) {
     }
 }
 
-export function wipeData() {
-    return {
-        type: "songs:WIPE_DATA"
-    }
-}
-
 export function getListFromDevice() {
     return syncDevice();
 }

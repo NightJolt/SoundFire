@@ -1,3 +1,8 @@
+export function formatRGBA(r, g, b, a) {
+    let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+    return rgba;
+}
+
 export function formatTimeBySeconds(s) {
     let h = Math.floor(s / 3600);
     s %= 3600;

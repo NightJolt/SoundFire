@@ -1,4 +1,4 @@
-package com.musicplayer;
+package com.audiofiremp;
 
 import com.facebook.react.ReactActivity;
 

@@ -1,14 +1,14 @@
 let _default = {
-    pageTitle: 'IDK',
-    searchBtn: true,
+    pageTitle: 'Playing Now',
+    searchBtn: false,
     favouriteBtn: false
 }
 
 const headerReducer = (state = _default, action) => {
     switch(action.type) {
-        case "header:SET_BUTTONS":
+        case "header:SET_TITLE":
             state = {
-                ...action.payload
+                pageTitle: action.payload
             }
             break;
         case "header:SEARCH_TOGGLE":
@@ -17,6 +17,7 @@ const headerReducer = (state = _default, action) => {
                 searchBtn: action.payload
             }
             break;
+            
         default:
             break;
     }

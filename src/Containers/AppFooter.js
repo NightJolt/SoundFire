@@ -52,21 +52,23 @@ class AppFooter extends React.Component {
         this.props.prepareAtPath({id: 0, path: this.props.songs.songList[0].path});
         
         this.interval = setInterval(() => {
-            if (Math.trunc(this.props.player.player.currentTime / 1000) == Math.trunc(this.props.player.player.duration / 1000) - 1) {
-                setTimeout(() => {
-                    if (this.props.player.repeat) {
-                        this.props.setSongId({id: this.props.player.currentSongId, path: this.props.songs.songList[this.props.player.currentSongId].path})
-                    } else if (this.props.player.shuffle) {
-                        let random = Math.floor(Math.random() * this.props.songs.songList.length + 1);
-                        this.props.setSongId({id: random, path: this.props.songs.songList[random].path})
-                    } else {
-                        this.playNext();
-                    }
-                }, 1000);
-            } else if (this.props.player.player.currentTime >= 0 || this.props.player.player.duration > 0) {
-                this.props.setProgress(this.props.player.player.currentTime);
-            } else {
-                this.props.setProgress(0);
+            if (this.props.player.isPlaying) {
+                if (Math.trunc(this.props.player.player.currentTime / 1000) == Math.trunc(this.props.player.player.duration / 1000) - 1) {
+                    setTimeout(() => {
+                        if (this.props.player.repeat) {
+                            this.props.setSongId({id: this.props.player.currentSongId, path: this.props.songs.songList[this.props.player.currentSongId].path})
+                        } else if (this.props.player.shuffle) {
+                            let random = Math.floor(Math.random() * this.props.songs.songList.length + 1);
+                            this.props.setSongId({id: random, path: this.props.songs.songList[random].path})
+                        } else {
+                            this.playNext();
+                        }
+                    }, 1000);
+                } else if (this.props.player.player.currentTime >= 0 || this.props.player.player.duration > 0) {
+                    this.props.setProgress(this.props.player.player.currentTime);
+                } else {
+                    this.props.setProgress(0);
+                }
             }
         }, 1000)
     }

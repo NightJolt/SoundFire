@@ -14,9 +14,6 @@ const songsReducer = (state = _default, action) => {
             for (let i=0;i<tracks.length;i++) {
                 tracks[i].id = i + 1;
                 
-                /*let cover = tracks[i].cover;
-                tracks[i].image = require(cover);*/
-                
                 let millsec = tracks[i].duration;
                 let hour = Math.floor(millsec / 3600000);
                 millsec %= 3600000;
@@ -59,13 +56,6 @@ const songsReducer = (state = _default, action) => {
             state = {
                 ...state,
                 loaded: action.payload
-            }
-            break;
-        case "songs:WIPE_DATA":
-            state = {
-                ...state,
-                songList: [],
-                lyrics: []
             }
             break;
         default:

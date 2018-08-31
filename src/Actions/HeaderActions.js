@@ -1,6 +1,6 @@
-export function search(value) {
+export function setTitle(value) {
     return {
-        type: 'header:SET_BUTTONS',
+        type: 'header:SET_TITLE',
         payload: value
     }
 }

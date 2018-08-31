@@ -1,5 +1,5 @@
 let _default = {
-    mainColor: "rgb(50, 205, 50)",
+    mainColor: "#32cd32",
     darkGrey: "rgb(55, 55, 55)",
     grey: "rgb(60, 60, 60)",
     lightGrey: "rgb(120, 120, 120)",
