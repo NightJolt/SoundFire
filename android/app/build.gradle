@@ -101,8 +101,8 @@ android {
         applicationId "com.audiofiremp"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 4
-        versionName "0.0.1"
+        versionCode 5
+        versionName "0.1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -151,6 +151,7 @@ android {
 }
 
 dependencies {
+	compile project(':react-native-audio-floating-widget')
     compile project(':react-native-get-music-files')
     compile project(':react-native-audio-toolkit')
     compile fileTree(dir: "libs", include: ["*.jar"])

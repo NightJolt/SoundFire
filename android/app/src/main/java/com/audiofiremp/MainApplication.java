@@ -3,6 +3,7 @@ package com.audiofiremp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import ce.go.dai.RNAudioFloatingWidgetPackage;
 import com.cinder92.musicfiles.RNReactNativeGetMusicFilesPackage;
 import com.futurice.rctaudiotoolkit.AudioPackage;
 import com.facebook.react.ReactNativeHost;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new RNAudioFloatingWidgetPackage(),
           new RNReactNativeGetMusicFilesPackage(),
           new AudioPackage()
       );

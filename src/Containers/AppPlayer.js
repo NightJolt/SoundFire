@@ -16,7 +16,7 @@ import {
     Accordion
 } from 'native-base';
 
-import { setPlayerItem } from '../Actions/PlayerActions';
+import { setPlayerItem, setProgress } from '../Actions/PlayerActions';
 
 import { formatTimeBySeconds, toPercent } from '../Functions';
 
@@ -27,8 +27,8 @@ class AppPlayer extends Component {
         this.state = {
             lyricsEdible: false,
             lyrics: '',
-            progressEdible: false,
-            heart: false
+            heart: false,
+            seekerPoint: 0
         }
         
         this.getLyrics();
@@ -86,6 +86,7 @@ class AppPlayer extends Component {
                       </Left>
                     </CardItem>
                 </Card>
+                
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', marginVertical: 5 }}>
                         <Icon style={{ color: this.props.player.repeat ? this.props.style.purple : this.props.style.darkWhite }} name="md-repeat" onPress={() => {this.props.setPlayerItem({name: 'repeat', value: !this.props.player.repeat})}} />
@@ -93,19 +94,39 @@ class AppPlayer extends Component {
                         <Icon style={{ color: this.state.heart ? this.props.style.red : this.props.style.darkWhite }} name="md-heart" onPress={() => {this.setState({heart: !this.state.heart})}} />
                     </View>
                 </Card>
+                
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 5 }}>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: this.props.style.darkWhite }}>{formatTimeBySeconds(Math.ceil(this.props.player.progress / 1000))}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5}}>
+                        <Text style={{ flex: 1, color: 'white', textAlign: 'center' }}>
+                            {formatTimeBySeconds(Math.trunc(this.props.player.progress / 1000))}
+                        </Text>
+                        <Text style={{ flex: 1, color: 'white', textAlign: 'center' }}>
+                            {this.props.songs.songList[this.props.player.currentSongId].time}
+                        </Text>
+                        <Text style={{ flex: 1, color: 'white', textAlign: 'center' }}>
+                            {this.props.player.player.duration > 0 ? toPercent(this.props.player.progress, this.props.player.player.duration, true) : '0%'}
+                        </Text>
+                    </View>
+                </Card>
+                
+                <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12 }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'white' }}>
+                                {formatTimeBySeconds(Math.trunc(this.state.seekerPoint / 1000))}
+                            </Text>
                         </View>
-                        <View style={{ width: '74%', justifyContent: 'center' }}>
-                            <Slider minimumValue={0} maximumValue={this.props.player.player.duration} value={!this.state.progressEdible ? this.props.player.progress : 0} minimumTrackTintColor={this.props.style.mainColor} thumbTintColor={this.props.style.mainColor} onValueChange={() => {this.setState({progressEdible: true})}} onSlidingComplete={(value) => {this.setState({progressEdible: false}); this.props.player.player.seek(value)}} />
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <Slider minimumValue={0} maximumValue={this.props.player.player.duration} minimumTrackTintColor={this.props.style.mainColor} thumbTintColor={this.props.style.mainColor} onValueChange={(seekerPoint) => {this.setState({seekerPoint})}} onSlidingComplete={(value) => {this.props.player.player.seek(value)}} />
                         </View>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: this.props.style.darkWhite }}>{this.props.songs.songList[this.props.player.currentSongId].time}</Text>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'white' }}>
+                                {this.props.player.player.duration > 0 ? toPercent(this.state.seekerPoint, this.props.player.player.duration, true) : '0%'}
+                            </Text>
                         </View>
                     </View>
                 </Card>
+                
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <CardItem style={{ backgroundColor: this.props.style.grey }}>
                         <Left>
@@ -133,6 +154,7 @@ class AppPlayer extends Component {
                         }
                     </CardItem>
                 </Card>
+                
                 <Card style={{ backgroundColor: this.props.style.grey, borderColor: this.props.style.lightBlack }}>
                     <CardItem style={{ backgroundColor: this.props.style.grey }}>
                         <Left>

@@ -26,8 +26,11 @@ export function formatTimeBySeconds(s) {
     return s;
 }
 
-export function toPercent(a, b) {
-    return a / b * 100 + '%';
+export function toPercent(a, b, mode = false) {
+    let percent = a / b * 100;
+    if (mode)
+        percent = Math.trunc(percent);
+    return percent + '%';
 }
 
 export function checkIfName(val) {

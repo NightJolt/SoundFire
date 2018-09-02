@@ -1,8 +1,7 @@
 let _default = {
     loaded: false,
     fullLength: 0,
-    songList: [],
-    lyrics: []
+    songList: []
 }
 
 const songsReducer = (state = _default, action) => {
@@ -50,7 +49,6 @@ const songsReducer = (state = _default, action) => {
                 fullLength: fullLength
             }
             
-            console.log(state);
             break;
         case "songs:SET_LOAD_STATE":
             state = {
